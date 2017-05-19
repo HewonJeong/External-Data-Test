@@ -1,0 +1,10 @@
+/.idea/
+.idea/
+.classpath
+.project
+*.iml
+/bin/
+/out/
+
+# Naver client sign-in information
+src/com/travelio/naverapi/NaverClientConfig.java
