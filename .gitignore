@@ -5,6 +5,7 @@
 *.iml
 /bin/
 /out/
+/target/
 
 # Naver client sign-in information
 src/com/travelio/naverapi/NaverClientConfig.java
