@@ -8,4 +8,4 @@
 /target/
 
 # Naver client sign-in information
-src/com/travelio/naverapi/NaverClientConfig.java
+src/com/hewonjeong/naverapi/NaverClientConfig.java
