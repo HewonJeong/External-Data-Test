@@ -16,7 +16,7 @@ public class NaverSearchApiTest {
         assertTrue(((JSONArray)obj.get("items")).length() == EXPECTED_ITEMS_LENGTH);
     }
     @Test
-    public gitvoid testResponeField() {
+    public void testResponeField() {
         JSONObject result = NaverSearchApi.request("local", "남이섬", 100, 1, "sim");
         assertTrue(result.has("items"));
         JSONArray arr = (JSONArray)result.get("items");
