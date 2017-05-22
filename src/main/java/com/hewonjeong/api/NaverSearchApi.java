@@ -24,7 +24,7 @@ public class NaverSearchApi {
             try {
                 URL apiUrl = getUrl(domain, query, display, idx, sort);
                 HttpURLConnection con = getHttpURLConnection(apiUrl);
-                JSONArray items = (JSONArray)getResponse(con).get("items2");
+                JSONArray items = (JSONArray)getResponse(con).get("items");
                 arr = concatArray(arr, items);
                 idx += display;
             } catch (NaverApiException e) {
