@@ -5,6 +5,7 @@ import com.hewonjeong.api.NaverSearchApi;
 import com.hewonjeong.util.FileManager;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,7 +21,9 @@ public class Test {
             JSONObject obj = NaverSearchApi.request(s, QUERY, DISPLAY , START, SORT_SIM);
             SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
             String to = transFormat.format(new Date());
-            FileManager.writeFile(obj, String.format("%s(%s).json", s, to));
+            File dir = new File(s);
+            if(!dir.exists()) dir.mkdir();
+            FileManager.writeFile(obj, String.format("%s/%s.json", s, to));
         }
     }
 }
