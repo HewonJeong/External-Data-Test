@@ -1,10 +1,14 @@
 package com.hewonjeong.naverapi;
 
 import com.hewonjeong.api.NaverSearchApi;
+import net.javacrumbs.jsonunit.core.Option;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
+import static net.javacrumbs.jsonunit.JsonAssert.when;
+import static net.javacrumbs.jsonunit.core.Option.*;
 import static org.junit.Assert.assertTrue;
 
 public class NaverSearchApiTest {
@@ -12,8 +16,13 @@ public class NaverSearchApiTest {
 
     @Test
     public void testRequest() {
+        // Valid request
         JSONObject obj = NaverSearchApi.request("kin", "춘천 여행", 100, 1, "sim");
         assertTrue(((JSONArray)obj.get("items")).length() == EXPECTED_ITEMS_LENGTH);
+
+        assertJsonEquals("[{\"address\":1}, {\"test\":2}]",
+                "[{\n\"test\": 1\n}, {\"TEST\": 4}]", when(IGNORING_VALUES));
+
     }
     @Test
     public void testResponeField() {
