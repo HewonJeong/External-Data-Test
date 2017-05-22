@@ -20,11 +20,10 @@ public class NaverSearchApiTest {
         JSONObject obj = NaverSearchApi.request("kin", "춘천 여행", 100, 1, "sim");
         assertTrue(((JSONArray)obj.get("items")).length() == EXPECTED_ITEMS_LENGTH);
 
-        assertJsonEquals("[{\"address\":1}, {\"test\":2}]",
-                "[{\n\"test\": 1\n}, {\"TEST\": 4}]", when(IGNORING_VALUES));
+        //assertJsonEquals(obj, );
 
     }
-    @Test
+    /*@Test
     public void testResponeField() {
         JSONObject result = NaverSearchApi.request("local", "남이섬", 100, 1, "sim");
         assertTrue(result.has("items"));
@@ -39,14 +38,14 @@ public class NaverSearchApiTest {
         assertTrue(obj.has("category"));
         assertTrue(obj.has("mapy"));
         assertTrue(obj.has("mapx"));
-    }
-    @Test(expected = Exception.class)
+    }*/
+    /*@Test(expected = Exception.class)
     public void testWrongStart() {
         NaverSearchApi.request("blog", "abc", 100, -1, "sim");
-    }
+    }*/
 
-    @Test(expected = Exception.class)
+   /* @Test(expected = Exception.class)
     public void testWrongDisplay() {
         NaverSearchApi.request("blog", "abc", 0, 1, "sim");
-    }
+    }*/
 }

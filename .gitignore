@@ -9,3 +9,9 @@
 
 # Naver client sign-in information
 src/com/hewonjeong/naverapi/NaverClientConfig.java
+
+# result files dirs
+/kin
+/news
+/local
+/blog
