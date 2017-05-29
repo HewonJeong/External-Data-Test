@@ -1,27 +1,39 @@
 package com.hewonjeong.naverapi;
 
+import com.hewonjeong.api.ApiErrorCode;
 import com.hewonjeong.api.NaverSearchApi;
-import net.javacrumbs.jsonunit.core.Option;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
-import static net.javacrumbs.jsonunit.JsonAssert.when;
-import static net.javacrumbs.jsonunit.core.Option.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class NaverSearchApiTest {
     final int EXPECTED_ITEMS_LENGTH = 1000;
+    final String[] KIN_OBJECT_KEYS = {"link", "description", "title"};
 
     @Test
-    public void testRequest() {
-        // Valid request
-        JSONObject obj = NaverSearchApi.request("kin", "춘천 여행", 100, 1, "sim");
-        assertTrue(((JSONArray)obj.get("items")).length() == EXPECTED_ITEMS_LENGTH);
+    public void testRequest_VaildParms_ShouldPass() {
+        JSONObject res = NaverSearchApi.request("kin", "춘천 여행", 100, 1, "sim");
+        JSONArray items = (JSONArray)res.get("items");
+        assertTrue(items.length() == EXPECTED_ITEMS_LENGTH);
+        for(int i = 0; i < items.length(); i++) {
+            JSONObject obj = items.getJSONObject(i);
+            assertTrue(hasKeys(obj, KIN_OBJECT_KEYS));
+        }
+    }
+    @Test
+    public void testRequest_invaildParm_ShouldPass() {
+        JSONObject res = NaverSearchApi.request("WRONG_PARM", "춘천 여행", 100, 1, "sim");
+        assertEquals(ApiErrorCode.NAVER_API_ERROR, res.getString("errorCode"));
+    }
 
-        //assertJsonEquals(obj, );
-
+    private boolean hasKeys(JSONObject obj, String[] keys) {
+        for(String key : keys) {
+            if (!obj.has(key)) return false;
+        }
+        return true;
     }
     /*@Test
     public void testResponeField() {

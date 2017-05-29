@@ -28,13 +28,13 @@ public class NaverSearchApi {
                 arr = concatArray(arr, items);
                 idx += display;
             } catch (NaverApiException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return errorObject(ApiErrorCode.NAVER_API_ERROR, e.getMessage());
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return errorObject(ApiErrorCode.CONN_EXCEPTION, e.getMessage());
             } catch (JSONException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return errorObject(ApiErrorCode.JSON_EXCEPTION, e.getMessage());
             }
         }

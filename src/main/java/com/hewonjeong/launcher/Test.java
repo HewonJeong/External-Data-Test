@@ -20,7 +20,7 @@ public class Test {
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         String to = transFormat.format(new Date());
         for (String s : TARGET_DOMAINS) {
-            JSONObject obj = NaverSearchApi.request(s, QUERY, DISPLAY , START, SORT_SIM);
+            JSONObject obj = NaverSearchApi.request("zzzzzzzz", QUERY, DISPLAY , START, SORT_SIM);
             File dir = new File(s);
             if(!dir.exists()) dir.mkdir();
             FileManager.writeFile(obj, String.format("%s/%s.json", s, to));
