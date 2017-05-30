@@ -20,15 +20,13 @@ public class Test {
         final String[] TARGET_DOMAINS = {"blog", "local", "kin", "news"};
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         String to = transFormat.format(new Date());
-        try {
-            for (String s : TARGET_DOMAINS) {
-                JSONObject obj = NaverSearchApi.request(s, query, display , start, SORT_SIM);
-                File dir = new File(s);
-                if(!dir.exists()) dir.mkdir();
-                FileManager.writeFile(obj, String.format("%s/%s.json", s, to));
-            }
-        } catch (IOException e) {
-            System.out.println("Error occurred while writing a file");
+
+        for (String s : TARGET_DOMAINS) {
+            JSONObject obj = NaverSearchApi.request(s, query, display, start, SORT_SIM);
+            File dir = new File(s);
+            if (!dir.exists()) dir.mkdir();
+            FileManager.writeFile(obj, String.format("%s/%s.json", s, to));
+
         }
     }
 }

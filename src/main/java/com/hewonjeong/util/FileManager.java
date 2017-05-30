@@ -8,9 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileManager {
-    public static void writeFile(JSONObject obj, String fileName) throws IOException{
-        BufferedWriter fileWriter = new BufferedWriter(new FileWriter(fileName, true));
-        fileWriter.write(obj.toString(4));
-        fileWriter.flush();
+    public static boolean writeFile(JSONObject obj, String fileName) {
+        try {
+            BufferedWriter fileWriter = new BufferedWriter(new FileWriter(fileName, false));
+            fileWriter.write(obj.toString());
+            fileWriter.flush();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

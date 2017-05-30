@@ -12,6 +12,9 @@ public class NaverSearchApiTest {
     final int EXPECTED_ITEMS_LENGTH = 1000;
     final String[] OBJECT_KEYS = {"link", "description", "title"};
     final String[] TARGET_DOMAINS = {"blog", "local", "kin", "news"};
+    final String noResultQuery = "Ffi22jp33#$#@d";
+    final int[] wrongDisplayVals = {-1, 0, 101};
+    final int[] wrongStartVals = {-1, 0, 1001};
 
     @Test
     public void testRequest_VaildParms_ShouldPass() {
@@ -34,7 +37,6 @@ public class NaverSearchApiTest {
     @Test
     public void testRequest_NoResultQuery_ShouldPass() {
         for (String s : TARGET_DOMAINS) {
-            final String noResultQuery = "Ffi22jp33#$#@d";
             JSONObject res = NaverSearchApi.request(s, noResultQuery, 100, 1, "sim");
             System.out.println(res);
             assertFalse(res.has("errorCode"));
@@ -45,7 +47,6 @@ public class NaverSearchApiTest {
     }
     @Test
     public void testRequest_InvalidDisplayValue_ShouldPass() {
-        final int[] wrongDisplayVals = {-1, 0, 101};
         for (int val : wrongDisplayVals) {
             JSONObject res = NaverSearchApi.request("blog", "전주 여행", val, 1, "sim");
             assertEquals("Error", res.getString("result"));
@@ -54,7 +55,6 @@ public class NaverSearchApiTest {
     }
     @Test
     public void testRequest_InvalidStartValue_ShouldPass() {
-        final int[] wrongStartVals = {-1, 0, 1001};
         for (int val : wrongStartVals) {
             JSONObject res = NaverSearchApi.request("blog", "전주 여행", 100, val, "sim");
             assertEquals("Error", res.getString("result"));
