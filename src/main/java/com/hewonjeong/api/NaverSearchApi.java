@@ -19,25 +19,25 @@ public class NaverSearchApi {
     public static JSONObject request(String domain, String query, int display, int start, String sort) {
         JSONObject res = new JSONObject();
         JSONArray arr = new JSONArray();
-        int idx = start;
-        while (idx <= MAX_ITEM_LENGTH) {
+        while (arr.length() < MAX_ITEM_LENGTH) {
             try {
-                URL apiUrl = getUrl(domain, query, display, idx, sort);
+                System.out.println(arr.length() + "  ");
+                URL apiUrl = getUrl(domain, query, display, start, sort);
                 HttpURLConnection con = getHttpURLConnection(apiUrl);
                 JSONArray items = (JSONArray)getResponse(con).get("items");
                 arr = concatArray(arr, items);
-                idx += display;
+                // If there's no result or it's last page of result, It's useless to request next page.
+                if (items.length() == 0 || items.length() < display) break;
+                start += display;
             } catch (NaverApiException e) {
-                //e.printStackTrace();
                 return errorObject(ApiErrorCode.NAVER_API_ERROR, e.getMessage());
             } catch (IOException e) {
-                //e.printStackTrace();
                 return errorObject(ApiErrorCode.CONN_EXCEPTION, e.getMessage());
             } catch (JSONException e) {
-                //e.printStackTrace();
                 return errorObject(ApiErrorCode.JSON_EXCEPTION, e.getMessage());
             }
         }
+        res.put("result", "OK");
         res.put("items", arr);
         return res;
     }
@@ -99,6 +99,7 @@ public class NaverSearchApi {
 
     private static JSONObject errorObject(String errorCode, String errorMessage) {
         JSONObject res = new JSONObject();
+        res.put("result", "Error");
         res.put("errorMessage", errorMessage);
         res.put("errorCode", errorCode);
         return res;
