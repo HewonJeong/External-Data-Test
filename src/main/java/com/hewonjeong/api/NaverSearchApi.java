@@ -21,9 +21,8 @@ public class NaverSearchApi {
         JSONArray arr = new JSONArray();
         while (arr.length() < MAX_ITEM_LENGTH) {
             try {
-                System.out.println(arr.length() + "  ");
-                URL apiUrl = getUrl(domain, query, display, start, sort);
-                HttpURLConnection con = getHttpURLConnection(apiUrl);
+                URL apiUrl = creatUri(domain, query, display, start, sort);
+                HttpURLConnection con = initHttpURLConnection(apiUrl);
                 JSONArray items = (JSONArray)getResponse(con).get("items");
                 arr = concatArray(arr, items);
                 // If there's no result or it's last page of result, It's useless to request next page.
@@ -42,7 +41,7 @@ public class NaverSearchApi {
         return res;
     }
 
-    private static URL getUrl(String domain, String query, int display, int start, String sort) {
+    private static URL creatUri(String domain, String query, int display, int start, String sort) {
         URL url = null;
         try {
             String encodedQuery = URLEncoder.encode(query, "UTF-8");
@@ -78,7 +77,7 @@ public class NaverSearchApi {
         br.close();
         return new JSONObject(res.toString());
     }
-    private static HttpURLConnection getHttpURLConnection(URL url) throws IOException {
+    private static HttpURLConnection initHttpURLConnection(URL url) throws IOException {
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("X-Naver-Client-Id", NaverClientConfig.CLIENT_ID);

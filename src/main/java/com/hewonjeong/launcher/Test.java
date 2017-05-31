@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Test {
-
     public static void main(String[] args) {
         final String query = "제주 여행";
         final int display = 100;
