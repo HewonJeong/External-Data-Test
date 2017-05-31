@@ -19,30 +19,29 @@ public class NaverSearchApi {
     public static JSONObject request(String domain, String query, int display, int start, String sort) {
         JSONObject res = new JSONObject();
         JSONArray arr = new JSONArray();
-        int idx = start;
-        while (idx <= MAX_ITEM_LENGTH) {
+        while (arr.length() < MAX_ITEM_LENGTH) {
             try {
-                URL apiUrl = getUrl(domain, query, display, idx, sort);
-                HttpURLConnection con = getHttpURLConnection(apiUrl);
+                URL apiUrl = creatUri(domain, query, display, start, sort);
+                HttpURLConnection con = initHttpURLConnection(apiUrl);
                 JSONArray items = (JSONArray)getResponse(con).get("items");
                 arr = concatArray(arr, items);
-                idx += display;
+                // If there's no result or it's last page of result, It's useless to request next page.
+                if (items.length() == 0 || items.length() < display) break;
+                start += display;
             } catch (NaverApiException e) {
-                e.printStackTrace();
                 return errorObject(ApiErrorCode.NAVER_API_ERROR, e.getMessage());
             } catch (IOException e) {
-                e.printStackTrace();
                 return errorObject(ApiErrorCode.CONN_EXCEPTION, e.getMessage());
             } catch (JSONException e) {
-                e.printStackTrace();
                 return errorObject(ApiErrorCode.JSON_EXCEPTION, e.getMessage());
             }
         }
+        res.put("result", "OK");
         res.put("items", arr);
         return res;
     }
 
-    private static URL getUrl(String domain, String query, int display, int start, String sort) {
+    private static URL creatUri(String domain, String query, int display, int start, String sort) {
         URL url = null;
         try {
             String encodedQuery = URLEncoder.encode(query, "UTF-8");
@@ -69,7 +68,7 @@ public class NaverSearchApi {
     }
 
     private static JSONObject readStream(InputStream is) throws IOException{
-        StringBuffer res = new StringBuffer();
+        StringBuilder res = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String inputLine;
         while ((inputLine = br.readLine()) != null) {
@@ -78,9 +77,8 @@ public class NaverSearchApi {
         br.close();
         return new JSONObject(res.toString());
     }
-    private static HttpURLConnection getHttpURLConnection(URL url) throws IOException {
-        HttpURLConnection con = null;
-        con = (HttpURLConnection)url.openConnection();
+    private static HttpURLConnection initHttpURLConnection(URL url) throws IOException {
+        HttpURLConnection con = (HttpURLConnection)url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("X-Naver-Client-Id", NaverClientConfig.CLIENT_ID);
         con.setRequestProperty("X-Naver-Client-Secret", NaverClientConfig.CLIENT_SECRET);
@@ -99,6 +97,7 @@ public class NaverSearchApi {
 
     private static JSONObject errorObject(String errorCode, String errorMessage) {
         JSONObject res = new JSONObject();
+        res.put("result", "Error");
         res.put("errorMessage", errorMessage);
         res.put("errorCode", errorCode);
         return res;

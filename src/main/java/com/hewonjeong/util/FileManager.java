@@ -3,17 +3,18 @@ package com.hewonjeong.util;
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class FileManager {
-    public static void writeFile(JSONObject obj, String fileName) {
+    public static boolean writeFile(JSONObject obj, String fileName) {
         try {
-            BufferedWriter fileWriter = new BufferedWriter(new FileWriter(fileName, true));
-            fileWriter.write(obj.toString(4));
+            BufferedWriter fileWriter = new BufferedWriter(new FileWriter(fileName, false));
+            fileWriter.write(obj.toString());
             fileWriter.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
+            return true;
+        } catch (IOException e) {
+            return false;
         }
     }
 }
