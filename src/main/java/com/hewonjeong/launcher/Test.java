@@ -6,7 +6,6 @@ import com.hewonjeong.util.FileManager;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,7 +25,6 @@ public class Test {
             File dir = new File(s);
             if (!dir.exists()) dir.mkdir();
             FileManager.writeFile(obj, String.format("%s/%s.json", s, to));
-
         }
     }
 }

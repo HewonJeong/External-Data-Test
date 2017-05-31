@@ -69,7 +69,7 @@ public class NaverSearchApi {
     }
 
     private static JSONObject readStream(InputStream is) throws IOException{
-        StringBuffer res = new StringBuffer();
+        StringBuilder res = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String inputLine;
         while ((inputLine = br.readLine()) != null) {
@@ -79,8 +79,7 @@ public class NaverSearchApi {
         return new JSONObject(res.toString());
     }
     private static HttpURLConnection getHttpURLConnection(URL url) throws IOException {
-        HttpURLConnection con = null;
-        con = (HttpURLConnection)url.openConnection();
+        HttpURLConnection con = (HttpURLConnection)url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("X-Naver-Client-Id", NaverClientConfig.CLIENT_ID);
         con.setRequestProperty("X-Naver-Client-Secret", NaverClientConfig.CLIENT_SECRET);
